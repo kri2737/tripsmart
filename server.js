@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const User = require("./models/User");
+const authRoutes = require("./routes/authRoutes");
 require('dotenv').config();
 
 const app = express();
@@ -8,6 +10,7 @@ const app = express();
 //middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth",authRoutes);
 
 app.get("/" , (req,res) =>{
       res.json({message : `Tripsmart API is running`});
@@ -22,6 +25,8 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 .catch((err)=>{
     console.log("Connection failed", err);
 });
+
+
 app.listen(8000,()=>{
     console.log("server running on port 8000");
 });
