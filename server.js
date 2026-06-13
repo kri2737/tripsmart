@@ -4,6 +4,9 @@ const cors = require('cors');
 const User = require("./models/User");
 const authRoutes = require("./routes/authRoutes");
 require('dotenv').config();
+const Trip = require('./models/Trip');
+const tripRoutes = require('./routes/tripRoutes');
+app.use('/api/trips', tripRoutes);
 
 const app = express();
 
@@ -27,6 +30,3 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 });
 
 
-app.listen(8000,()=>{
-    console.log("server running on port 8000");
-});
