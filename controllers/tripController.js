@@ -3,7 +3,8 @@ const axios = require('axios');
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: 'https://api.groq.com/openai/v1'
 });
 
 // Search Trip
@@ -45,7 +46,7 @@ exports.searchTrip = async (req, res) => {
   
       // Step 3 - Generate Itinerary using OpenAI
       const itineraryResponse = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model:  'llama-3.3-70b-versatile',
         messages: [
           {
             role: 'user',
