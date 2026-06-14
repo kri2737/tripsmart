@@ -50,7 +50,16 @@ exports.searchTrip = async (req, res) => {
         messages: [
           {
             role: 'user',
-            content: `Create a detailed ${days} day travel itinerary for ${destination} with a budget of ${budget} rupees. Include morning, afternoon and evening activities for each day.`
+            content: `Create a ${days} day travel itinerary for ${destination} with a budget of ${budget} rupees. 
+
+            Format your response exactly like this for each day:
+            
+            **Day 1**
+            - Morning: [activity]
+            - Afternoon: [activity]
+            - Evening: [activity]
+            
+            Keep each activity description short, one line only. Use bullet points only. No long paragraphs. No introduction or conclusion text, just start directly with Day 1.`
           }
         ]
       });
@@ -75,26 +84,62 @@ exports.searchTrip = async (req, res) => {
   // Save Trip
 exports.saveTrip = async (req, res) => {
     try {
-      res.status(200).json({ message: 'Save trip coming soon' });
+      const { destination, days, budget, hotels, restaurants, itinerary } = req.body;
+
+      const trip = await Trip.create({
+        userId: req.userId,
+        destination,
+        days,
+        budget,
+        hotels,
+        restaurants,
+        itinerary
+      });
+  
+      res.status(201).json({
+        message: 'Trip saved successfully',
+        trip
+      });
+  
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      console.log('Could not Save Trip:', error);
+    res.status(500).json({ message: error.message });
     }
   };
+
   
   // Get Saved Trips
-  exports.getSavedTrips = async (req, res) => {
-    try {
-      res.status(200).json({ message: 'Get saved trips coming soon' });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  };
-  
+  // Get Saved Trips
+exports.getSavedTrips = async (req, res) => {
+  try {
+    const trips = await Trip.find({ userId: req.userId });
+
+    res.status(200).json({
+      count: trips.length,
+      trips
+    });
+
+  } catch (error) {
+    console.log('GET TRIPS ERROR:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
   // Delete Trip
-  exports.deleteTrip = async (req, res) => {
-    try {
-      res.status(200).json({ message: 'Delete trip coming soon' });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  // Delete Trip
+exports.deleteTrip = async (req, res) => {
+  try {
+    const trip = await Trip.findOne({ _id: req.params.id, userId: req.userId });
+
+    if (!trip) {
+      return res.status(404).json({ message: 'Trip not found' });
     }
-  };
+
+    await Trip.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({ message: 'Trip deleted successfully' });
+
+  } catch (error) {
+    console.log('DELETE TRIP ERROR:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
