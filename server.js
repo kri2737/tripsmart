@@ -6,9 +6,11 @@ const authRoutes = require("./routes/authRoutes");
 require('dotenv').config();
 const Trip = require('./models/Trip');
 const tripRoutes = require('./routes/tripRoutes');
+const app = express();
+
 app.use('/api/trips', tripRoutes);
 
-const app = express();
+
 
 //middleware
 app.use(cors());
