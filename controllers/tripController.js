@@ -109,7 +109,7 @@ exports.saveTrip = async (req, res) => {
 
   
   // Get Saved Trips
-  // Get Saved Trips
+  
 exports.getSavedTrips = async (req, res) => {
   try {
     const trips = await Trip.find({ userId: req.userId });
@@ -125,7 +125,7 @@ exports.getSavedTrips = async (req, res) => {
   }
 };
   // Delete Trip
-  // Delete Trip
+
 exports.deleteTrip = async (req, res) => {
   try {
     const trip = await Trip.findOne({ _id: req.params.id, userId: req.userId });
