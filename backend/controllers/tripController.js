@@ -10,7 +10,7 @@ const openai = new OpenAI({
 // Search Trip
 exports.searchTrip = async (req, res) => {
     try {
-      const { destination, days, budget } = req.body;
+      const { destination, days, budget, people } = req.body;
   
       // Step 1 - Search Hotels using Google Places
       const hotelsResponse = await axios.get(
@@ -25,8 +25,10 @@ exports.searchTrip = async (req, res) => {
       const hotels = hotelsResponse.data.results.slice(0, 5).map(hotel => ({
         name: hotel.name,
         address: hotel.formatted_address,
-        rating: hotel.rating
-      }));
+        rating: hotel.rating,
+        priceLevel: hotel.price_level !== undefined ? hotel.price_level : 'Not available'
+    }));
+      
   
       // Step 2 - Search Restaurants using Google Places
       const restaurantsResponse = await axios.get(
@@ -41,8 +43,9 @@ exports.searchTrip = async (req, res) => {
       const restaurants = restaurantsResponse.data.results.slice(0, 5).map(restaurant => ({
         name: restaurant.name,
         address: restaurant.formatted_address,
-        rating: restaurant.rating
-      }));
+        rating: restaurant.rating,
+        priceLevel: restaurant.price_level !== undefined ? restaurant.price_level : 'Not available'
+    }));
   
       // Step 3 - Generate Itinerary using OpenAI
       const itineraryResponse = await openai.chat.completions.create({
@@ -50,16 +53,20 @@ exports.searchTrip = async (req, res) => {
         messages: [
           {
             role: 'user',
-            content: `Create a ${days} day travel itinerary for ${destination} with a budget of ${budget} rupees. 
+            content: `Create a ${days} day travel itinerary for ${destination} for ${people} people with a total budget of ${budget} rupees.
 
-            Format your response exactly like this for each day:
-            
-            **Day 1**
-            - Morning: [activity]
-            - Afternoon: [activity]
-            - Evening: [activity]
-            
-            Keep each activity description short, one line only. Use bullet points only. No long paragraphs. No introduction or conclusion text, just start directly with Day 1.`
+             Format your response exactly like this for each day:
+
+             **Day 1**
+             - Morning: [activity] - Approx cost: ₹[amount]
+             - Afternoon: [activity] - Approx cost: ₹[amount]
+             - Evening: [activity] - Approx cost: ₹[amount]
+
+             At the end, add:
+             **Total Estimated Cost: ₹[total amount]**
+
+            Keep activity descriptions short, one line only. Use bullet points only. Make sure the total estimated cost stays within or close to the given budget. No introduction or conclusion text, just start directly with Day 1.`
+          
           }
         ]
       });
