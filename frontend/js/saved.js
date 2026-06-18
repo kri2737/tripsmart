@@ -1,0 +1,64 @@
+let allTrips = [];  // store full trip data globally
+
+async function loadSavedTrips() {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:8000/api/trips/saved', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            allTrips = data.trips;  // save full data for later use
+
+            const tripsHTML = data.trips.map(trip => `
+                <div class="tripCard" data-id="${trip._id}">
+                    <h3>${trip.destination}</h3>
+                    <p>Days: ${trip.days}</p>
+                    <p>Budget: ₹${trip.budget}</p>
+                    <div class="tripDetails" style="display:none;"></div>
+                </div>
+            `).join('');
+
+            document.getElementById('tripsList').innerHTML = tripsHTML;
+
+            addCardClickListeners();
+        } else {
+            document.getElementById('message').textContent = data.message;
+        }
+
+    } catch (error) {
+        document.getElementById('message').textContent = 'Something went wrong';
+    }
+}
+
+function addCardClickListeners() {
+    document.querySelectorAll('.tripCard').forEach(card => {
+        card.addEventListener('click', function() {
+            const tripId = this.getAttribute('data-id');
+            const trip = allTrips.find(t => t._id === tripId);
+            const detailsDiv = this.querySelector('.tripDetails');
+
+            if (detailsDiv.style.display === 'none') {
+                detailsDiv.innerHTML = `
+                    <h4>Hotels</h4>
+                    <p>${JSON.stringify(trip.hotels)}</p>
+                    <h4>Restaurants</h4>
+                    <p>${JSON.stringify(trip.restaurants)}</p>
+                    <h4>Itinerary</h4>
+                    <p>${trip.itinerary}</p>
+                `;
+                detailsDiv.style.display = 'block';
+            } else {
+                detailsDiv.style.display = 'none';
+            }
+        });
+    });
+}
+
+loadSavedTrips();
