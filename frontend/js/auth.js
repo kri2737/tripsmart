@@ -19,6 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         if (response.ok) {
             document.getElementById('message').textContent = 'Login successful!';
             localStorage.setItem('token', data.token);
+            window.location.href = 'search.html';
         } else {
             document.getElementById('message').textContent = data.message;
         }
@@ -50,6 +51,7 @@ if (document.getElementById('signUpForm')) {
             if (response.ok) {
                 document.getElementById('message').textContent = 'Registration successful!';
                 localStorage.setItem('token', data.token);
+                window.location.href = 'search.html';
             } else {
                 document.getElementById('message').textContent = data.message;
             }
