@@ -52,6 +52,7 @@ function addCardClickListeners() {
                     <p>${JSON.stringify(trip.restaurants)}</p>
                     <h4>Itinerary</h4>
                     <p>${trip.itinerary}</p>
+                    <button class="deleteButton" data-id="${trip._id}">Delete Trip</button>
                 `;
                 detailsDiv.style.display = 'block';
             } else {
@@ -60,5 +61,32 @@ function addCardClickListeners() {
         });
     });
 }
+document.getElementById('tripsList').addEventListener('click', async function(e) {
+    if (e.target.classList.contains('deleteButton')) {
+        const tripId = e.target.getAttribute('data-id');
+        
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch(`http://localhost:8000/api/trips/${tripId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                loadSavedTrips();  // reload the list after delete
+            } else {
+                document.getElementById('message').textContent = data.message;
+            }
+
+        } catch (error) {
+            document.getElementById('message').textContent = 'Something went wrong';
+        }
+    }
+});
 
 loadSavedTrips();
