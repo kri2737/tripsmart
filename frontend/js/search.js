@@ -1,3 +1,9 @@
+document.getElementById('logoutButton').addEventListener('click', function() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+});
+
+
 let currentTripData = null;
 document.getElementById('search').addEventListener('submit', async function(e) {
     e.preventDefault();
