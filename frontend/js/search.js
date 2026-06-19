@@ -27,27 +27,47 @@ document.getElementById('search').addEventListener('submit', async function(e) {
             body: JSON.stringify({ destination, days, budget, people })
         });
 
-        const data = await response.json();
+        
 
+        const data = await response.json();
         if (response.ok) {
             document.getElementById('message').textContent = '';
-            currentTripData = data; 
+            currentTripData = data;
             document.getElementById('saveButton').style.display = 'block';
+        
+            const hotelsHTML = data.hotels.map(hotel => `
+                <div class="card">
+                    <h4>${hotel.name}</h4>
+                    <p>${hotel.address}</p>
+                    <p>Rating: ${hotel.rating || 'N/A'}</p>
+                    <p>Price Level: ${hotel.priceLevel}</p>
+                </div>
+            `).join('');
+        
+            const restaurantsHTML = data.restaurants.map(restaurant => `
+                <div class="card">
+                    <h4>${restaurant.name}</h4>
+                    <p>${restaurant.address}</p>
+                    <p>Rating: ${restaurant.rating || 'N/A'}</p>
+                    <p>Price Level: ${restaurant.priceLevel}</p>
+                </div>
+            `).join('');
+        
             document.getElementById('result').innerHTML = `
                 <h2>Hotels</h2>
-                <p>${JSON.stringify(data.hotels)}</p>
+                <div class="cardContainer">${hotelsHTML}</div>
                 <h2>Restaurants</h2>
-                <p>${JSON.stringify(data.restaurants)}</p>
+                <div class="cardContainer">${restaurantsHTML}</div>
                 <h2>Itinerary</h2>
-                <p>${data.itinerary}</p>
+                <div class="itinerary">${data.itinerary}</div>
             `;
         } else {
             document.getElementById('message').textContent = data.message;
         }
-
-    } catch (error) {
-        document.getElementById('message').textContent = 'Something went wrong';
     }
+        catch (error) {                               // ← MAKE SURE THIS EXISTS
+            document.getElementById('message').textContent = 'Something went wrong';
+        }
 });
 document.getElementById('saveButton').addEventListener('click', async function() {
     const token = localStorage.getItem('token');

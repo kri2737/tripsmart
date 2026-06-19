@@ -77,3 +77,35 @@ h1 {
     margin: 30px 0;
     color: #2c3e50;
 }
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 250px;
+}
+
+.card h4 {
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.itinerary {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    white-space: pre-line;
+}
+
+h2 {
+    margin: 20px 0 10px 0;
+    color: #2c3e50;
+}
