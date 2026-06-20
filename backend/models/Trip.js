@@ -18,6 +18,7 @@ const tripSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  // people field - number of travelers for this trip
   people: {
     type: Number,
     required: true
