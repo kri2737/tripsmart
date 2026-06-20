@@ -115,7 +115,7 @@ exports.saveTrip = async (req, res) => {
 
   
   // Get Saved Trips
-  
+  // Save Trip - stores user's searched trip with all details including people count
 exports.getSavedTrips = async (req, res) => {
   try {
     const trips = await Trip.find({ userId: req.userId });
