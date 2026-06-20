@@ -91,18 +91,17 @@ exports.searchTrip = async (req, res) => {
   // Save Trip
 exports.saveTrip = async (req, res) => {
     try {
-      const { destination, days, budget, hotels, restaurants, itinerary } = req.body;
-
+      const { destination, days, budget, people, hotels, restaurants, itinerary } = req.body;
       const trip = await Trip.create({
         userId: req.userId,
         destination,
         days,
         budget,
+        people,
         hotels,
         restaurants,
         itinerary
-      });
-  
+    });
       res.status(201).json({
         message: 'Trip saved successfully',
         trip

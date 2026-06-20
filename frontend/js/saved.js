@@ -23,8 +23,7 @@ async function loadSavedTrips() {
             const tripsHTML = data.trips.map(trip => `
                 <div class="tripCard" data-id="${trip._id}">
                     <h3>${trip.destination}</h3>
-                    <p>Days: ${trip.days}</p>
-                    <p>Budget: ₹${trip.budget}</p>
+                   <p>${trip.days} days • ₹${trip.budget} • ${trip.people} people</p>
                     <div class="tripDetails" style="display:none;"></div>
                 </div>
             `).join('');

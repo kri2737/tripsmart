@@ -109,3 +109,50 @@ h2 {
     margin: 20px 0 10px 0;
     color: #2c3e50;
 }
+
+/* For Trip Cards */
+#tripsList {
+    max-width: 800px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tripCard {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.tripCard:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.tripCard h3 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.tripDetails {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.deleteButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.deleteButton:hover {
+    background-color: #c0392b;
+}
