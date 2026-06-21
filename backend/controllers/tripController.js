@@ -26,7 +26,10 @@ exports.searchTrip = async (req, res) => {
         name: hotel.name,
         address: hotel.formatted_address,
         rating: hotel.rating,
-        priceLevel: hotel.price_level !== undefined ? hotel.price_level : 'Not available'
+        priceLevel: hotel.price_level !== undefined ? hotel.price_level : 'Not available',
+        image: hotel.photos?.[0]?.photo_reference 
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${hotel.photos[0].photo_reference}&key=${process.env.GOOGLE_API_KEY}`
+            : ''
     }));
       
   
@@ -44,7 +47,10 @@ exports.searchTrip = async (req, res) => {
         name: restaurant.name,
         address: restaurant.formatted_address,
         rating: restaurant.rating,
-        priceLevel: restaurant.price_level !== undefined ? restaurant.price_level : 'Not available'
+        priceLevel: restaurant.price_level !== undefined ? restaurant.price_level : 'Not available',
+        image: restaurant.photos?.[0]?.photo_reference 
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${restaurant.photos[0].photo_reference}&key=${process.env.GOOGLE_API_KEY}`
+            : ''
     }));
   
       // Step 3 - Generate Itinerary using OpenAI
@@ -71,6 +77,18 @@ exports.searchTrip = async (req, res) => {
         ]
       });
       const itinerary = itineraryResponse.choices[0].message.content;
+      // Get destination image from Unsplash
+      const unsplashResponse = await axios.get('https://api.unsplash.com/search/photos', {
+     params: {
+      query: destination,
+      per_page: 1
+    },
+    headers: {
+      Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`
+    }
+     });
+
+    const destinationImage = unsplashResponse.data.results[0]?.urls?.regular || '';
   
       // Step 4 - Send back response
       res.status(200).json({
@@ -79,8 +97,9 @@ exports.searchTrip = async (req, res) => {
         budget,
         hotels,
         restaurants,
-        itinerary
-      });
+        itinerary,
+        destinationImage
+    });
   
     } catch (error) {
       console.log('SEARCH ERROR:', error);

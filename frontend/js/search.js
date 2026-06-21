@@ -37,6 +37,7 @@ document.getElementById('search').addEventListener('submit', async function(e) {
         
             const hotelsHTML = data.hotels.map(hotel => `
                 <div class="card">
+                    ${hotel.image ? `<img src="${hotel.image}" class="cardImage">` : ''}
                     <h4>${hotel.name}</h4>
                     <p>${hotel.address}</p>
                     <p>Rating: ${hotel.rating || 'N/A'}</p>
@@ -46,6 +47,7 @@ document.getElementById('search').addEventListener('submit', async function(e) {
         
             const restaurantsHTML = data.restaurants.map(restaurant => `
                 <div class="card">
+                ${restaurant.image ? `<img src="${restaurant.image}" class="cardImage">` : ''}
                     <h4>${restaurant.name}</h4>
                     <p>${restaurant.address}</p>
                     <p>Rating: ${restaurant.rating || 'N/A'}</p>
@@ -54,12 +56,13 @@ document.getElementById('search').addEventListener('submit', async function(e) {
             `).join('');
         
             document.getElementById('result').innerHTML = `
-                <h2>Hotels</h2>
-                <div class="cardContainer">${hotelsHTML}</div>
-                <h2>Restaurants</h2>
-                <div class="cardContainer">${restaurantsHTML}</div>
-                <h2>Itinerary</h2>
-                <div class="itinerary">${data.itinerary}</div>
+            ${data.destinationImage ? `<img src="${data.destinationImage}" class="destinationBanner">` : ''}
+            <h2>Hotels</h2>
+            <div class="cardContainer">${hotelsHTML}</div>
+            <h2>Restaurants</h2>
+            <div class="cardContainer">${restaurantsHTML}</div>
+            <h2>Itinerary</h2>
+            <div class="itinerary">${data.itinerary}</div>
             `;
         } else {
             document.getElementById('message').textContent = data.message;
