@@ -8,7 +8,7 @@ async function loadSavedTrips() {
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:8000/api/trips/saved', {
+        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/trips/saved', {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token
@@ -71,7 +71,7 @@ document.getElementById('tripsList').addEventListener('click', async function(e)
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch(`http://localhost:8000/api/trips/${tripId}`, {
+            const response = await fetch(`https://tripsmart-lpsm.onrender.com/api/trips/${tripId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': 'Bearer ' + token

@@ -18,7 +18,7 @@ document.getElementById('search').addEventListener('submit', async function(e) {
     document.getElementById('message').textContent = 'Searching... please wait';
 
     try {
-        const response = await fetch('http://localhost:8000/api/trips/search', {
+        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/trips/search', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ document.getElementById('saveButton').addEventListener('click', async function()
     const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch('http://localhost:8000/api/trips/save', {
+        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/trips/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
