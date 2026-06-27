@@ -60,41 +60,6 @@ tripsmart/
 
 ---
 
-## ⚙️ Getting Started Locally
-
-### Prerequisites
-- Node.js installed
-- MongoDB Atlas account
-- Git
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/kri2737/tripsmart.git
-cd tripsmart
-```
-
-### 2. Setup Backend
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file in the backend folder:
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-PORT=8000
-```
-
-Start the backend server:
-```bash
-npm start
-```
-
-### 3. Open Frontend
-Open `docs/index.html` in your browser or use Live Server in VS Code.
-
----
 
 ## 🔒 Environment Variables
 
@@ -115,9 +80,6 @@ Open `docs/index.html` in your browser or use Live Server in VS Code.
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ---
 
