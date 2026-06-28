@@ -219,3 +219,103 @@ h2 {
     border-radius: 8px;
     margin-bottom: 20px;
 }
+
+
+/* Budget Breakdown Card */
+.budgetCard {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin: 20px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  
+  .budgetHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .budgetHeader h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .budgetBadge {
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  
+  .budgetRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.92rem;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .budgetRow small {
+    color: #999;
+    font-size: 0.78rem;
+  }
+  
+  .budgetDivider {
+    height: 1px;
+    background: #ddd;
+    margin: 8px 0;
+  }
+  
+  .budgetTotal {
+    font-size: 0.98rem;
+    font-weight: 500;
+    border-bottom: none;
+  }
+  
+  .budgetTip {
+    margin: 14px 0 0;
+    padding: 10px 14px;
+    background: #fff8e1;
+    border-left: 4px solid #f39c12;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #7d5a00;
+  }
+  
+  /* Card body wrapper */
+  .cardBody {
+    padding: 12px;
+  }
+  
+  /* Price tag + cost estimate inside cards */
+  .cardMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .priceTag {
+    background: #1a1a2e;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  
+  .costEstimate {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
