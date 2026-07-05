@@ -14,7 +14,7 @@ document.getElementById('logoutButton').addEventListener('click', function() {
     const budget      = document.getElementById('budget').value;
     const token       = localStorage.getItem('token');
   
-    document.getElementById('message').textContent = 'Searching... please wait';
+    document.getElementById('message').innerHTML = '<div class="spinner"></div>';
     document.getElementById('result').innerHTML = '';
     document.getElementById('saveButton').style.display = 'none';
   
