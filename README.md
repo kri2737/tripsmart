@@ -78,7 +78,7 @@ tripsmart/
 3. Get instant **hotel & restaurant suggestions** with a full **itinerary**
 4. **Save** your trip for later or **delete** it anytime
 
----
+--
 
 
 --
