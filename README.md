@@ -1,6 +1,6 @@
 # 🌍 TripSmart
 
-> Your intelligent travel planning companion — plan smarter, travel better.
+> Your  intelligent travel planning companion — plan smarter, travel better.
 
 ![TripSmart](https://img.shields.io/badge/Status-Live-brightgreen) ![HTML](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-orange) ![Node.js](https://img.shields.io/badge/Backend-Node.js%20%2F%20Express-green) ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen)
 
