@@ -6,7 +6,7 @@
 
 ---
 
-## 📌 About
+## 📌About
 
 TripSmart is a full-stack travel planning web application that helps users plan their trips effortlessly. Simply enter your destination, number of days, number of people, and budget — and TripSmart will generate personalized hotel and restaurant suggestions along with a complete day-by-day itinerary.
 
