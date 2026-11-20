@@ -1,95 +1,111 @@
-document.getElementById('logoutButton').addEventListener('click', function() {
-    localStorage.removeItem('token');
-    window.location.href = 'login.html';
+document.getElementById('logoutButton').addEventListener('click', function () {
+  localStorage.removeItem('token');
+  window.location.href = 'login.html';
 });
-let allTrips = [];  // store full trip data globally
+
+let allTrips = [];
 
 async function loadSavedTrips() {
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
+  if (!token) {
+    window.location.href = 'login.html';
+    return;
+  }
 
-    try {
-        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/trips/saved', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+  try {
+    const response = await fetch(`${window.API_BASE_URL}/api/trips/saved`, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (response.ok) {
-            allTrips = data.trips;  // save full data for later use
+    if (response.ok) {
+      allTrips = data.trips || [];
 
-            const tripsHTML = data.trips.map(trip => `
-                <div class="tripCard" data-id="${trip._id}">
-                    <h3>${trip.destination}</h3>
-                   <p>${trip.days} days • ₹${trip.budget} • ${trip.people} people</p>
-                    <div class="tripDetails" style="display:none;"></div>
-                </div>
-            `).join('');
+      if (allTrips.length === 0) {
+        document.getElementById('tripsList').innerHTML = '<p>No saved trips yet.</p>';
+        return;
+      }
 
-            document.getElementById('tripsList').innerHTML = tripsHTML;
+      const tripsHTML = allTrips.map((trip) => `
+        <div class="tripCard" data-id="${window.escapeHTML(trip._id)}">
+          <h3>${window.escapeHTML(trip.destination)}</h3>
+          <p>${window.escapeHTML(trip.days)} days • ₹${window.escapeHTML(trip.budget)} • ${window.escapeHTML(trip.people)} people</p>
+          <div class="tripDetails" style="display:none;"></div>
+        </div>
+      `).join('');
 
-            addCardClickListeners();
-        } else {
-            document.getElementById('message').textContent = data.message;
-        }
-
-    } catch (error) {
-        document.getElementById('message').textContent = 'Something went wrong';
+      document.getElementById('tripsList').innerHTML = tripsHTML;
+      addCardClickListeners();
+    } else {
+      document.getElementById('message').textContent = data.message || 'Failed to load trips';
     }
+  } catch (error) {
+    document.getElementById('message').textContent = 'Something went wrong';
+  }
 }
 
 function addCardClickListeners() {
-    document.querySelectorAll('.tripCard').forEach(card => {
-        card.addEventListener('click', function() {
-            const tripId = this.getAttribute('data-id');
-            const trip = allTrips.find(t => t._id === tripId);
-            const detailsDiv = this.querySelector('.tripDetails');
+  document.querySelectorAll('.tripCard').forEach((card) => {
+    card.addEventListener('click', function (e) {
+      if (e.target.classList.contains('deleteButton')) return;
 
-            if (detailsDiv.style.display === 'none') {
-                detailsDiv.innerHTML = `
-                    <h4>Hotels</h4>
-                    <p>${JSON.stringify(trip.hotels)}</p>
-                    <h4>Restaurants</h4>
-                    <p>${JSON.stringify(trip.restaurants)}</p>
-                    <h4>Itinerary</h4>
-                    <p>${trip.itinerary}</p>
-                    <button class="deleteButton" data-id="${trip._id}">Delete Trip</button>
-                `;
-                detailsDiv.style.display = 'block';
-            } else {
-                detailsDiv.style.display = 'none';
-            }
-        });
+      const tripId = this.getAttribute('data-id');
+      const trip = allTrips.find((t) => t._id === tripId);
+      const detailsDiv = this.querySelector('.tripDetails');
+
+      if (detailsDiv.style.display === 'none') {
+        const hotelNames = (trip.hotels || []).map((h) => window.escapeHTML(h.name)).join(', ') || 'None';
+        const restaurantNames = (trip.restaurants || []).map((r) => window.escapeHTML(r.name)).join(', ') || 'None';
+        const formattedItinerary = window.escapeHTML(trip.itinerary || '')
+          .replace(/\n/g, '<br>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        detailsDiv.innerHTML = `
+          <h4>Hotels</h4>
+          <p>${hotelNames}</p>
+          <h4>Restaurants</h4>
+          <p>${restaurantNames}</p>
+          <h4>Itinerary</h4>
+          <div>${formattedItinerary}</div>
+          <button class="deleteButton" data-id="${window.escapeHTML(trip._id)}">Delete Trip</button>
+        `;
+        detailsDiv.style.display = 'block';
+      } else {
+        detailsDiv.style.display = 'none';
+      }
     });
+  });
 }
-document.getElementById('tripsList').addEventListener('click', async function(e) {
-    if (e.target.classList.contains('deleteButton')) {
-        const tripId = e.target.getAttribute('data-id');
-        
-        const token = localStorage.getItem('token');
 
-        try {
-            const response = await fetch(`https://tripsmart-lpsm.onrender.com/api/trips/${tripId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            });
+document.getElementById('tripsList').addEventListener('click', async function (e) {
+  if (e.target.classList.contains('deleteButton')) {
+    e.stopPropagation();
+    const tripId = e.target.getAttribute('data-id');
+    const token = localStorage.getItem('token');
 
-            const data = await response.json();
-
-            if (response.ok) {
-                loadSavedTrips();  // reload the list after delete
-            } else {
-                document.getElementById('message').textContent = data.message;
-            }
-
-        } catch (error) {
-            document.getElementById('message').textContent = 'Something went wrong';
+    try {
+      const response = await fetch(`${window.API_BASE_URL}/api/trips/${encodeURIComponent(tripId)}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + token
         }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        loadSavedTrips();
+      } else {
+        document.getElementById('message').textContent = data.message || 'Delete failed';
+      }
+    } catch (error) {
+      document.getElementById('message').textContent = 'Something went wrong';
     }
+  }
 });
 
 loadSavedTrips();

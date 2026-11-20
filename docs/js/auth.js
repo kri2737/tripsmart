@@ -7,7 +7,7 @@ if (document.getElementById('loginForm')) {
       document.getElementById('message').innerHTML = '<div class="spinner"></div>';
   
       try {
-        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/auth/login', {
+        const response = await fetch(`${window.API_BASE_URL}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ if (document.getElementById('loginForm')) {
       document.getElementById('message').innerHTML = '<div class="spinner"></div>';
   
       try {
-        const response = await fetch('https://tripsmart-lpsm.onrender.com/api/auth/register', {
+        const response = await fetch(`${window.API_BASE_URL}/api/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
